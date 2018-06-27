@@ -1,16 +1,20 @@
-# -*- coding: utf-8 -*-
 """
 Created on Wed Jun 27 09:45:46 2018
 @author: suksmono
 script to check consistencies between the s-domain and q-domain
 compensation factor in transforming k-body -> 2-body interactions
+q-domain: H(qi,qj,qn;delta) = delta*(qn+qi*qj-2*qi*qn-2*qj*qn)
+s-domain : H(si,sj,sn;delta) = ????
 """
 
 from sympy import *
 import numpy as np
-# define s matrix
+# define configurations
+# s-domain
 S3=[ [ 1, 1, 1], [ 1, 1,-1], [ 1,-1, 1], [ 1,-1,-1], \
      [-1, 1, 1], [-1, 1,-1], [-1,-1, 1], [-1,-1,-1] ]
+
+# q-domain
 Q3=[ [ 0, 0, 0], [ 0, 0, 1], [ 0, 1, 0], [ 0, 1, 1], \
      [ 1, 0, 0], [ 1, 0, 1], [ 1, 1, 0], [ 1, 1, 1] ]
 # define function vq2s
@@ -23,11 +27,10 @@ print('\nLevels of energy in q-domain vs s-domain:\n')
 for m in range(0, 7):
      v1=Q3[m];
      qn=v1[0]; qi=v1[1]; qj=v1[2];
-     # sVec=[qn qi qj]; % h2*h1 -> h3
-     #%% q-domain: eq.(8)
+
      H2q = 3*float(qn)+ float(qi and qj) - 2*float(qi and qn) \
           - 2*float(qj and qn);
-     #%% s-domain: eq.(10)mod
+     # convert to s
      sn=vq2s(qn); si=vq2s(qi);sj=vq2s(qj);
      '''
      --------------------------------------------------------
